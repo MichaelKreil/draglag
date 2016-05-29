@@ -28,17 +28,32 @@ header section {
 	left: 0;
 	z-index: 2;
 
-	margin: 1em;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 2em;
 
 	transition: opacity .5s ease;
+}
+header section.instructions {
+	bottom: 50%;
+
+	margin-top: -2em;
+
+	text-align: center;
 }
 header p:last-child {
 	margin-bottom: 0;
 }
 
 h1 {
-	font-weight: 300;
-	font-size: 2em;
+	font-weight: 500;
+	font-size: 1.2em;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+h1 b {
+	font-weight: 700;
+	margin-right: .05em;
 }
 
 main {
@@ -58,12 +73,13 @@ h2 {
 }
 dt {
 	font-weight: 500;
-	margin-right: .5em;
+	margin-right: 1em;
 }
 dd {
 	display: none;
 }
-dt.yes {
+dt.yes::before {
+	content: "✓ ";
 }
 dt.no {
 	opacity: 0.5;

@@ -5,6 +5,8 @@ window.addEventListener('DOMContentLoaded', function () {
 	var capabilitiesList = document.querySelector('.capabilities');
 	annotations.style.opacity = 0;
 	draglag.on('didTestTouchCapabilities', function (capabilities) {
+		document.querySelector('.js-input-device').textContent =
+			capabilities.isTouchDevice ? 'finger' : 'cursor';
 		function yesno(title, bool) {
 			if (bool) return '<dt class="yes">' + title + '</dt><dd>yes</dd>';
 			else return '<dt class="no">' + title + '</dt><dd>no</dd>';
@@ -39,6 +41,7 @@ function Draglag(element) {
 	canvas.addEventListener('mousemove', handleMouseMove);
 
 	var hasStarted = false;
+	var initializationTime = Date.now();
 
 	// Set up canvas drawing
 	var width, height, s;
@@ -233,15 +236,15 @@ function Draglag(element) {
 
 	// Event handlers
 	function handleTouchStart(ev) {
-		if (!hasStarted) {
-			trigger('start');
-			hasStarted = true;
-		}
 		if (!touchCapabilities) touchCapabilities = testTouchCapabilities(ev);
 		ev.preventDefault();
 		touches = touchList.make(ev);
 	}
 	function handleTouchMove(ev) {
+		if (!hasStarted) {
+			trigger('start');
+			hasStarted = true;
+		}
 		ev.preventDefault();
 		touches = touchList.make(ev);
 	}
@@ -252,7 +255,7 @@ function Draglag(element) {
 	function handleMouseMove(ev) {
 		if (!touchCapabilities) touchCapabilities = testTouchCapabilities(ev);
 		if (touchCapabilities.isTouchDevice) return;
-		if (!hasStarted) {
+		if (!hasStarted && Date.now() - initializationTime > 500) {
 			trigger('start');
 			hasStarted = true;
 		}
@@ -294,5 +297,4 @@ function Draglag(element) {
 		on: addListener,
 		off: removeListener,
 	}
-
 }
