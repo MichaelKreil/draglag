@@ -47,6 +47,9 @@ function Draglag(element) {
 	var width, height, s;
 	element.appendChild(canvas);
 	handleResize();
+	// Try to work around a bug that causes the canvas to be the wrong size
+	// when the page is loaded for the very first time
+	setTimeout(handleResize, 100);
 	window.addEventListener('resize', handleResize);
 	requestAnimationFrame(drawLoop);
 
