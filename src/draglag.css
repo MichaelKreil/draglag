@@ -13,6 +13,7 @@ body {
 	color: #eee;
 
 	background: #000;
+	cursor: url(cursor.png) 8 8, crosshair;
 }
 
 header {
