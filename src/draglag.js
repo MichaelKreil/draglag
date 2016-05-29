@@ -116,16 +116,21 @@ function Draglag(element) {
 		isTouchDevice = !!(ev.touches && ev.touches[0]);
 		var touch;
 		if (isTouchDevice) {
+			// I initially tested for equality to `undefined`, but this led to
+			// incorrect reports as Mobile Safari sets the `force` property to 0
+			// on browsers that do not support force touch (and maybe even on those
+			// that do?). Since none of these properties being 0 makes sense anyway,
+			// let's just test for truthiness.
 			touch = ev.touches[0];
-			radius = touch.radiusX !== undefined && touch.radiusY !== undefined;
-			rotationAngle = touch.rotationAngle !== undefined;
-			force = touch.force !== undefined;
+			radius = touch.radiusX && touch.radiusY;
+			rotationAngle = touch.rotationAngle;
+			force = touch.force;
 		}
 		var capabilities = {
-			isTouchDevice: isTouchDevice,
-			radius: radius,
-			rotationAngle: rotationAngle,
-			force: force,
+			isTouchDevice: !!isTouchDevice,
+			radius: !!radius,
+			rotationAngle: !!rotationAngle,
+			force: !!force,
 		}
 		trigger('didTestTouchCapabilities', capabilities);
 		return capabilities;
