@@ -2,7 +2,20 @@ window.addEventListener('DOMContentLoaded', function () {
 	var draglag = Draglag(document.querySelector('main'));
 	var instructions = document.querySelector('.instructions');
 	var annotations = document.querySelector('.annotations');
+	var capabilitiesList = document.querySelector('.capabilities');
 	annotations.style.opacity = 0;
+	draglag.on('didTestTouchCapabilities', function (capabilities) {
+		function yesno(title, bool) {
+			if (bool) return '<dt class="yes">' + title + '</dt><dd>yes</dd>';
+			else return '<dt class="no">' + title + '</dt><dd>no</dd>';
+		}
+		capabilitiesList.innerHTML = [
+			yesno('is touch device', capabilities.isTouchDevice),
+			yesno('radius', capabilities.radius),
+			yesno('rotationAngle', capabilities.rotationAngle),
+			yesno('force', capabilities.force),
+		].join('\n');
+	});
 	draglag.on('start', function () {
 		annotations.style.opacity = 1;
 		instructions.style.opacity = 0;
@@ -111,6 +124,7 @@ function Draglag(element) {
 			rotationAngle: rotationAngle,
 			force: force,
 		}
+		trigger('didTestTouchCapabilities', capabilities);
 		return capabilities;
 	}
 
