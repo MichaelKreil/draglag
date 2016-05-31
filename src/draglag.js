@@ -244,11 +244,13 @@ function Draglag(element) {
 
 	// Event handlers
 	function handleTouchStart(ev) {
+		if (window.debugmode) console.log('touchStart', ev);
 		if (!touchCapabilities) touchCapabilities = testTouchCapabilities(ev);
 		ev.preventDefault();
 		touches = touchList.make(ev);
 	}
 	function handleTouchMove(ev) {
+		if (window.debugmode) console.log('touchMove', ev);
 		if (!hasStarted) {
 			trigger('start');
 			hasStarted = true;
@@ -256,11 +258,13 @@ function Draglag(element) {
 		ev.preventDefault();
 		touches = touchList.make(ev);
 	}
-	function handleTouchEnd() {
+	function handleTouchEnd(ev) {
+		if (window.debugmode) console.log('touchEnd', ev);
 		touches = touchList.clear();
 	}
 	var mouseMoveTimeout;
 	function handleMouseMove(ev) {
+		if (window.debugmode) console.log('mouseMove', ev);
 		if (!touchCapabilities) touchCapabilities = testTouchCapabilities(ev);
 		if (touchCapabilities.isTouchDevice) return;
 		if (!hasStarted && Date.now() - initializationTime > 500) {
